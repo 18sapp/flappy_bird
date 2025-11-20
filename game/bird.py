@@ -1,0 +1,84 @@
+"""
+Bird class with physics and lives system
+"""
+
+import pygame
+from .constants import (
+    BIRD_WIDTH, BIRD_HEIGHT, BIRD_START_X, BIRD_START_Y,
+    GRAVITY, JUMP_STRENGTH, BIRD_MAX_VELOCITY, INITIAL_LIVES
+)
+
+
+class Bird(pygame.sprite.Sprite):
+    """Bird sprite with physics and lives management"""
+    
+    def __init__(self, x=BIRD_START_X, y=BIRD_START_Y):
+        super().__init__()
+        self.image = pygame.Surface((BIRD_WIDTH, BIRD_HEIGHT))
+        self.image.fill((255, 200, 0))  # Yellow bird
+        # Draw a simple bird shape
+        pygame.draw.ellipse(self.image, (255, 200, 0), (0, 0, BIRD_WIDTH, BIRD_HEIGHT))
+        pygame.draw.circle(self.image, (255, 0, 0), (BIRD_WIDTH - 10, BIRD_HEIGHT // 2), 5)  # Eye
+        pygame.draw.polygon(self.image, (255, 100, 0), [
+            (BIRD_WIDTH, BIRD_HEIGHT // 2),
+            (BIRD_WIDTH + 10, BIRD_HEIGHT // 2 - 5),
+            (BIRD_WIDTH + 10, BIRD_HEIGHT // 2 + 5)
+        ])  # Beak
+        
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        
+        self.velocity = 0
+        self.lives = INITIAL_LIVES
+        self.alive = True
+        
+    def jump(self):
+        """Make the bird jump"""
+        if self.alive:
+            self.velocity = JUMP_STRENGTH
+    
+    def update(self):
+        """Update bird position based on physics"""
+        if self.alive:
+            # Apply gravity
+            self.velocity += GRAVITY
+            # Limit max velocity
+            if self.velocity > BIRD_MAX_VELOCITY:
+                self.velocity = BIRD_MAX_VELOCITY
+            
+            # Update position
+            self.rect.y += self.velocity
+            
+            # Keep bird on screen
+            if self.rect.top < 0:
+                self.rect.top = 0
+                self.velocity = 0
+            if self.rect.bottom > 600:  # Screen height
+                self.rect.bottom = 600
+                self.velocity = 0
+    
+    def lose_life(self):
+        """Lose a life and reset position"""
+        if self.lives > 0:
+            self.lives -= 1
+            if self.lives <= 0:
+                self.alive = False
+            else:
+                # Reset position when losing a life
+                self.rect.x = BIRD_START_X
+                self.rect.y = BIRD_START_Y
+                self.velocity = 0
+    
+    def reset(self):
+        """Reset bird to initial state"""
+        self.rect.x = BIRD_START_X
+        self.rect.y = BIRD_START_Y
+        self.velocity = 0
+        self.lives = INITIAL_LIVES
+        self.alive = True
+    
+    def get_lives(self):
+        """Get current number of lives"""
+        return self.lives
+
