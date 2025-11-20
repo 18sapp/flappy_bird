@@ -26,6 +26,7 @@ BIRD_START_Y = 300
 GRAVITY = 0.5
 JUMP_STRENGTH = -8
 BIRD_MAX_VELOCITY = 10
+BIRD_IMAGE_PATH = "assets/images/bird.png"  # Path to bird image (optional)
 
 # Pipe settings
 PIPE_WIDTH = 80

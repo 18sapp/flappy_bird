@@ -4,8 +4,9 @@ Main game loop and entry point
 
 import pygame
 import sys
+import os
 from .constants import (
-    SCREEN_WIDTH, SCREEN_HEIGHT, FPS, PIPE_SPAWN_DISTANCE
+    SCREEN_WIDTH, SCREEN_HEIGHT, FPS, PIPE_SPAWN_DISTANCE, BIRD_IMAGE_PATH
 )
 from .bird import Bird
 from .pipes import PipePair
@@ -22,8 +23,11 @@ class Game:
         pygame.display.set_caption("Flappy Bird - Collect Coins!")
         self.clock = pygame.time.Clock()
         
+        # Get bird image path (check if file exists)
+        bird_image = BIRD_IMAGE_PATH if os.path.exists(BIRD_IMAGE_PATH) else None
+        
         # Game objects
-        self.bird = Bird()
+        self.bird = Bird(image_path=bird_image)
         self.pipes = []
         self.coin_manager = CoinManager()
         

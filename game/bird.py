@@ -3,6 +3,7 @@ Bird class with physics and lives system
 """
 
 import pygame
+import os
 from .constants import (
     BIRD_WIDTH, BIRD_HEIGHT, BIRD_START_X, BIRD_START_Y,
     GRAVITY, JUMP_STRENGTH, BIRD_MAX_VELOCITY, INITIAL_LIVES
@@ -12,22 +13,39 @@ from .constants import (
 class Bird(pygame.sprite.Sprite):
     """Bird sprite with physics and lives management"""
     
-    def __init__(self, x=BIRD_START_X, y=BIRD_START_Y):
+    def __init__(self, x=BIRD_START_X, y=BIRD_START_Y, image_path=None):
         super().__init__()
-        self.image = pygame.Surface((BIRD_WIDTH, BIRD_HEIGHT))
-        self.image.fill((255, 200, 0))  # Yellow bird
-        # Draw a simple bird shape
-        pygame.draw.ellipse(self.image, (255, 200, 0), (0, 0, BIRD_WIDTH, BIRD_HEIGHT))
-        pygame.draw.circle(self.image, (255, 0, 0), (BIRD_WIDTH - 10, BIRD_HEIGHT // 2), 5)  # Eye
-        pygame.draw.polygon(self.image, (255, 100, 0), [
-            (BIRD_WIDTH, BIRD_HEIGHT // 2),
-            (BIRD_WIDTH + 10, BIRD_HEIGHT // 2 - 5),
-            (BIRD_WIDTH + 10, BIRD_HEIGHT // 2 + 5)
-        ])  # Beak
+        
+        # Try to load image from file, otherwise use default drawing
+        if image_path and os.path.exists(image_path):
+            try:
+                # Load and scale the image
+                self.image = pygame.image.load(image_path).convert_alpha()
+                self.image = pygame.transform.scale(self.image, (BIRD_WIDTH, BIRD_HEIGHT))
+            except pygame.error:
+                # If image loading fails, use default drawing
+                self.image = self._create_default_bird()
+        else:
+            # Use default drawing if no image path provided or file doesn't exist
+            self.image = self._create_default_bird()
         
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+    
+    def _create_default_bird(self):
+        """Create default bird using drawing functions"""
+        surface = pygame.Surface((BIRD_WIDTH, BIRD_HEIGHT), pygame.SRCALPHA)
+        surface.fill((255, 200, 0))  # Yellow bird
+        # Draw a simple bird shape
+        pygame.draw.ellipse(surface, (255, 200, 0), (0, 0, BIRD_WIDTH, BIRD_HEIGHT))
+        pygame.draw.circle(surface, (255, 0, 0), (BIRD_WIDTH - 10, BIRD_HEIGHT // 2), 5)  # Eye
+        pygame.draw.polygon(surface, (255, 100, 0), [
+            (BIRD_WIDTH, BIRD_HEIGHT // 2),
+            (BIRD_WIDTH + 10, BIRD_HEIGHT // 2 - 5),
+            (BIRD_WIDTH + 10, BIRD_HEIGHT // 2 + 5)
+        ])  # Beak
+        return surface
         
         self.velocity = 0
         self.lives = INITIAL_LIVES
