@@ -132,7 +132,10 @@ class PlayingState(GameState):
                 continue
                 
             for pipe in pipe_pair.get_sprites():
-                if self.bird.rect.colliderect(pipe.rect):
+                # Use collision_rect instead of rect for collision detection
+                # (excludes horizontal padding extensions)
+                collision_rect = getattr(pipe, 'collision_rect', pipe.rect)
+                if self.bird.rect.colliderect(collision_rect):
                     # Play collision sound if available
                     if self.collision_sound:
                         self.collision_sound.play()

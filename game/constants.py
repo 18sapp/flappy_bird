@@ -18,6 +18,12 @@ GOLD = (255, 215, 0)
 RED = (255, 0, 0)
 GRAY = (128, 128, 128)
 
+# Pipe colors (Mario style)
+PIPE_GREEN = (0, 180, 0)  # Main pipe green
+PIPE_DARK_GREEN = (0, 120, 0)  # Darker green for borders
+PIPE_RIM_COLOR = (0, 100, 0)  # Rim/cap color
+PIPE_HIGHLIGHT = (50, 220, 50)  # Light green for highlights
+
 # Bird settings
 BIRD_WIDTH = 40
 BIRD_HEIGHT = 30
@@ -35,6 +41,7 @@ PIPE_SPEED = 3
 PIPE_SPAWN_DISTANCE = 300
 PIPE_MIN_HEIGHT = 100
 PIPE_MAX_HEIGHT = 400
+PIPE_HORIZONTAL_PADDING = 20  # Horizontal extension at pipe openings (manhole effect)
 
 # Coin settings
 COIN_SIZE = 30
