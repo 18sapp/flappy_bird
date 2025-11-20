@@ -3,7 +3,7 @@ Coin collection system
 """
 
 import pygame
-from .constants import COIN_SIZE, GOLD, YELLOW, COIN_ROTATION_SPEED
+from .constants import COIN_SIZE, GOLD, YELLOW, COIN_ROTATION_SPEED, PIPE_SPEED
 
 
 class Coin(pygame.sprite.Sprite):
@@ -25,8 +25,11 @@ class Coin(pygame.sprite.Sprite):
         self.collected = False
     
     def update(self):
-        """Update coin animation"""
+        """Update coin animation and position"""
         if not self.collected:
+            # Move coin left with pipes
+            self.rect.x -= PIPE_SPEED
+            
             # Rotate coin
             self.rotation_angle += COIN_ROTATION_SPEED
             if self.rotation_angle >= 360:
@@ -34,7 +37,9 @@ class Coin(pygame.sprite.Sprite):
             
             # Create rotated image
             self.image = pygame.transform.rotate(self.base_image, self.rotation_angle)
-            self.rect = self.image.get_rect(center=self.rect.center)
+            # Update rect center to maintain position after rotation
+            old_center = self.rect.center
+            self.rect = self.image.get_rect(center=old_center)
     
     def collect(self):
         """Mark coin as collected"""
