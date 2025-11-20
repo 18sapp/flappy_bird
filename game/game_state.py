@@ -97,6 +97,7 @@ class PlayingState(GameState):
         self.score = 0
         self.font_medium = None
         self.font_small = None
+        self.hit_pipe_pairs = set()  # Track which pipe pairs have been hit
     
     def init_fonts(self):
         """Initialize fonts"""
@@ -118,14 +119,27 @@ class PlayingState(GameState):
     
     def update(self):
         """Update game logic"""
+        # Only check collisions if bird is alive and not invincible
+        if not self.bird.alive or self.bird.invincible:
+            return
+        
         # Check collisions with pipes
         for pipe_pair in self.pipes:
+            # Skip if this pipe pair already caused damage
+            if id(pipe_pair) in self.hit_pipe_pairs:
+                continue
+                
             for pipe in pipe_pair.get_sprites():
                 if self.bird.rect.colliderect(pipe.rect):
                     self.bird.lose_life()
+                    # Mark this pipe pair as hit
+                    self.hit_pipe_pairs.add(id(pipe_pair))
+                    # Clear hit pipe pairs when bird loses a life (so it can be hit by new pipes after invincibility)
+                    if self.bird.invincible:
+                        self.hit_pipe_pairs.clear()
                     if not self.bird.alive:
                         self.next_state = 'game_over'
-                    return
+                    return  # Exit early to prevent multiple collisions in same frame
         
         # Check coin collection
         if self.coin_manager.check_collision(self.bird.rect):

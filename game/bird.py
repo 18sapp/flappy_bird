@@ -32,6 +32,14 @@ class Bird(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        
+        # Initialize bird properties
+        self.velocity = 0
+        self.lives = INITIAL_LIVES
+        self.alive = True
+        self.invincible = False
+        self.invincible_timer = 0
+        self.INVINCIBLE_DURATION = 120  # Frames of invincibility (2 seconds at 60 FPS)
     
     def _create_default_bird(self):
         """Create default bird using drawing functions"""
@@ -47,10 +55,6 @@ class Bird(pygame.sprite.Sprite):
         ])  # Beak
         return surface
         
-        self.velocity = 0
-        self.lives = INITIAL_LIVES
-        self.alive = True
-        
     def jump(self):
         """Make the bird jump"""
         if self.alive:
@@ -58,6 +62,12 @@ class Bird(pygame.sprite.Sprite):
     
     def update(self):
         """Update bird position based on physics"""
+        # Update invincibility timer
+        if self.invincible:
+            self.invincible_timer -= 1
+            if self.invincible_timer <= 0:
+                self.invincible = False
+        
         if self.alive:
             # Apply gravity
             self.velocity += GRAVITY
@@ -78,7 +88,7 @@ class Bird(pygame.sprite.Sprite):
     
     def lose_life(self):
         """Lose a life and reset position"""
-        if self.lives > 0:
+        if self.lives > 0 and not self.invincible:
             self.lives -= 1
             if self.lives <= 0:
                 self.alive = False
@@ -87,6 +97,9 @@ class Bird(pygame.sprite.Sprite):
                 self.rect.x = BIRD_START_X
                 self.rect.y = BIRD_START_Y
                 self.velocity = 0
+                # Start invincibility period
+                self.invincible = True
+                self.invincible_timer = self.INVINCIBLE_DURATION
     
     def reset(self):
         """Reset bird to initial state"""
@@ -95,6 +108,8 @@ class Bird(pygame.sprite.Sprite):
         self.velocity = 0
         self.lives = INITIAL_LIVES
         self.alive = True
+        self.invincible = False
+        self.invincible_timer = 0
     
     def get_lives(self):
         """Get current number of lives"""
