@@ -7,8 +7,7 @@ import random
 from .constants import (
     SCREEN_WIDTH, SCREEN_HEIGHT, PIPE_WIDTH, PIPE_GAP,
     PIPE_SPEED, PIPE_SPAWN_DISTANCE, PIPE_MIN_HEIGHT, PIPE_MAX_HEIGHT,
-    PIPE_GREEN, PIPE_DARK_GREEN, PIPE_RIM_COLOR, PIPE_HIGHLIGHT,
-    PIPE_HORIZONTAL_PADDING
+    PIPE_COLOR, PIPE_HORIZONTAL_PADDING
 )
 
 
@@ -32,47 +31,47 @@ class Pipe(pygame.sprite.Sprite):
             # Draw horizontal extension at the bottom (opening)
             padding_y = total_height - cap_height  # Position at the opening
             # Left horizontal extension
-            pygame.draw.rect(self.image, PIPE_RIM_COLOR, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                             (0, padding_y - 5, PIPE_HORIZONTAL_PADDING, cap_height + 10))
-            pygame.draw.rect(self.image, PIPE_DARK_GREEN, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                             (0, padding_y - 5, PIPE_HORIZONTAL_PADDING, cap_height + 10), 2)
             # Right horizontal extension
-            pygame.draw.rect(self.image, PIPE_RIM_COLOR, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                             (PIPE_WIDTH + PIPE_HORIZONTAL_PADDING, padding_y - 5, 
                              PIPE_HORIZONTAL_PADDING, cap_height + 10))
-            pygame.draw.rect(self.image, PIPE_DARK_GREEN, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                             (PIPE_WIDTH + PIPE_HORIZONTAL_PADDING, padding_y - 5, 
                              PIPE_HORIZONTAL_PADDING, cap_height + 10), 2)
             
             # Draw pipe cap/rim (top part)
             pipe_x = PIPE_HORIZONTAL_PADDING
-            pygame.draw.rect(self.image, PIPE_RIM_COLOR, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                            (pipe_x, 0, PIPE_WIDTH, cap_height))
-            pygame.draw.rect(self.image, PIPE_DARK_GREEN, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                            (pipe_x, 0, PIPE_WIDTH, cap_height), 2)
             
             # Draw pipe body (offset by horizontal padding)
             pipe_y = cap_height
-            pygame.draw.rect(self.image, PIPE_GREEN, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                             (pipe_x, pipe_y, PIPE_WIDTH, height))
             
             # Draw vertical borders
-            pygame.draw.line(self.image, PIPE_DARK_GREEN, 
+            pygame.draw.line(self.image, PIPE_COLOR, 
                             (pipe_x, pipe_y), (pipe_x, total_height), 3)
-            pygame.draw.line(self.image, PIPE_DARK_GREEN, 
+            pygame.draw.line(self.image, PIPE_COLOR, 
                             (pipe_x + PIPE_WIDTH-1, pipe_y), 
                             (pipe_x + PIPE_WIDTH-1, total_height), 3)
             
             # Draw light green area starting from top (covering full height)
             highlight_width = 15  # Width of the light green area
-            pygame.draw.rect(self.image, PIPE_HIGHLIGHT, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                             (pipe_x, 0, highlight_width, total_height))
             
             # Draw horizontal bands for texture (only on right side, not in highlight area)
             # Skip the highlight area on the left side
             for y in range(pipe_y + 20, total_height, 20):
                 # Draw band only on the right side (after highlight area)
-                pygame.draw.line(self.image, PIPE_DARK_GREEN, 
+                pygame.draw.line(self.image, PIPE_COLOR, 
                                (pipe_x + highlight_width + 5, y), 
                                (pipe_x + PIPE_WIDTH-5, y), 1)
             
@@ -95,48 +94,48 @@ class Pipe(pygame.sprite.Sprite):
             # Draw horizontal extension at the BEGINNING (top, y=0) instead of at the opening
             padding_y = 0  # Position at the beginning/top
             # Left horizontal extension
-            pygame.draw.rect(self.image, PIPE_RIM_COLOR, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                             (0, padding_y - 5, PIPE_HORIZONTAL_PADDING, cap_height + 10))
-            pygame.draw.rect(self.image, PIPE_DARK_GREEN, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                             (0, padding_y - 5, PIPE_HORIZONTAL_PADDING, cap_height + 10), 2)
             # Right horizontal extension
-            pygame.draw.rect(self.image, PIPE_RIM_COLOR, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                             (PIPE_WIDTH + PIPE_HORIZONTAL_PADDING, padding_y - 5, 
                              PIPE_HORIZONTAL_PADDING, cap_height + 10))
-            pygame.draw.rect(self.image, PIPE_DARK_GREEN, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                             (PIPE_WIDTH + PIPE_HORIZONTAL_PADDING, padding_y - 5, 
                              PIPE_HORIZONTAL_PADDING, cap_height + 10), 2)
             
             # Draw pipe body (offset by horizontal padding)
             pipe_x = PIPE_HORIZONTAL_PADDING
-            pygame.draw.rect(self.image, PIPE_GREEN, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                             (pipe_x, 0, PIPE_WIDTH, height))
             
             # Draw vertical borders
-            pygame.draw.line(self.image, PIPE_DARK_GREEN, 
+            pygame.draw.line(self.image, PIPE_COLOR, 
                             (pipe_x, 0), (pipe_x, height), 3)
-            pygame.draw.line(self.image, PIPE_DARK_GREEN, 
+            pygame.draw.line(self.image, PIPE_COLOR, 
                             (pipe_x + PIPE_WIDTH-1, 0), (pipe_x + PIPE_WIDTH-1, height), 3)
             
             # Draw light green area starting from bottom (going upward)
             highlight_width = 15  # Width of the light green area
             highlight_height = height // 3  # Height of the light green area (1/3 of pipe height)
             # Draw light green area starting from bottom (going upward)
-            pygame.draw.rect(self.image, PIPE_HIGHLIGHT, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                             (pipe_x, height - highlight_height, highlight_width, highlight_height))
             
             # Draw horizontal bands for texture (only on right side, not in highlight area)
             for y in range(20, height, 20):
                 # Draw band only on the right side (after highlight area)
-                pygame.draw.line(self.image, PIPE_DARK_GREEN, 
+                pygame.draw.line(self.image, PIPE_COLOR, 
                                (pipe_x + highlight_width + 5, y), 
                                (pipe_x + PIPE_WIDTH-5, y), 1)
             
             # Draw pipe cap/rim (bottom part, at the opening)
             cap_y = height
-            pygame.draw.rect(self.image, PIPE_RIM_COLOR, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                             (pipe_x, cap_y, PIPE_WIDTH, cap_height))
-            pygame.draw.rect(self.image, PIPE_DARK_GREEN, 
+            pygame.draw.rect(self.image, PIPE_COLOR, 
                             (pipe_x, cap_y, PIPE_WIDTH, cap_height), 2)
             
             self.rect = self.image.get_rect()

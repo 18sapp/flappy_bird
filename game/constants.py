@@ -18,11 +18,8 @@ GOLD = (255, 215, 0)
 RED = (255, 0, 0)
 GRAY = (128, 128, 128)
 
-# Pipe colors (Mario style)
-PIPE_GREEN = (0, 180, 0)  # Main pipe green
-PIPE_DARK_GREEN = (0, 120, 0)  # Darker green for borders
-PIPE_RIM_COLOR = (0, 100, 0)  # Rim/cap color
-PIPE_HIGHLIGHT = (50, 220, 50)  # Light green for highlights
+# Pipe color
+PIPE_COLOR = (0, 180, 0)  # Single green color for all pipe elements
 
 # Bird settings
 BIRD_WIDTH = 40
