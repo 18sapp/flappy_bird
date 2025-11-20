@@ -89,11 +89,13 @@ class MenuState(GameState):
 class PlayingState(GameState):
     """Game playing state"""
     
-    def __init__(self, bird, pipes, coin_manager):
+    def __init__(self, bird, pipes, coin_manager, coin_sound=None, collision_sound=None):
         super().__init__()
         self.bird = bird
         self.pipes = pipes
         self.coin_manager = coin_manager
+        self.coin_sound = coin_sound  # Store sound reference
+        self.collision_sound = collision_sound  # Store collision sound reference
         self.score = 0
         self.font_medium = None
         self.font_small = None
@@ -131,6 +133,9 @@ class PlayingState(GameState):
                 
             for pipe in pipe_pair.get_sprites():
                 if self.bird.rect.colliderect(pipe.rect):
+                    # Play collision sound if available
+                    if self.collision_sound:
+                        self.collision_sound.play()
                     self.bird.lose_life()
                     # Mark this pipe pair as hit
                     self.hit_pipe_pairs.add(id(pipe_pair))
@@ -144,9 +149,15 @@ class PlayingState(GameState):
         # Check coin collection
         if self.coin_manager.check_collision(self.bird.rect):
             self.score += 10  # Coin score
+            # Play coin sound if available
+            if self.coin_sound:
+                self.coin_sound.play()
         
         # Check if bird hit top or bottom
         if self.bird.rect.top <= 0 or self.bird.rect.bottom >= SCREEN_HEIGHT:
+            # Play collision sound if available
+            if self.collision_sound:
+                self.collision_sound.play()
             self.bird.lose_life()
             if not self.bird.alive:
                 self.next_state = 'game_over'

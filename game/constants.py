@@ -40,6 +40,7 @@ PIPE_MAX_HEIGHT = 400
 COIN_SIZE = 30
 COIN_SPAWN_OFFSET = 50  # Offset from pipe gap center
 COIN_ROTATION_SPEED = 5
+COIN_SPAWN_PROBABILITY = 0.6  # 60% chance to spawn a coin (0.0 to 1.0)
 
 # Game settings
 INITIAL_LIVES = 3
@@ -50,4 +51,9 @@ COIN_SCORE = 10
 FONT_SIZE_LARGE = 48
 FONT_SIZE_MEDIUM = 32
 FONT_SIZE_SMALL = 24
+
+# Sound settings
+COIN_SOUND_PATH = "assets/sounds/coin.wav"  # Path to coin collection sound
+COLLISION_SOUND_PATH = "assets/sounds/collision.wav"  # Path to collision sound
+BACKGROUND_MUSIC_PATH = "assets/sounds/background.wav"  # Path to background music
 
